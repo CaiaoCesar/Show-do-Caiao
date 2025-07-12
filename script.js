@@ -99,102 +99,80 @@ const hardQuestions = [
     }
 ];
 
-function nameUser() {
-    const name = readline.question("\nQual o seu nome? ");
-    return name;
-}
-
-function addScore(showScore, mixQuestions) {
-    let addBonusLevel = mixQuestions.score += showScore.score;
-
-    if (mediumQuestions.level === "faceis")
-    {
-        addBonusLevel = addBonusLevel * 2; //50 mil reais
-    }
-    else if (mediumQuestions.level === "intermediarias")
-    {
-        addBonusLevel = addBonusLevel * 1.8; //450 mil reais
-    }
-    else if (mediumQuestions.level === "dificeis")
-    {
-        addBonusLevel = addBonusLevel * 1; //500 mil reais
-    }
-    score = addBonusLevel; //win = 1.000.000
-}
-
-function showScore() {
-    console.log(`Pontuação: ${score}R$`);
-}
-
-function useAnswer(answer, mixQuestions, userName){
-    if (answer === mixQuestions.correct) {
-        console.log(`✔ Resposta Correta ${userName}!`);
-        addScore();
-        showScore();
-    } else {
-        console.log(`❌ Resposta Incorreta ${userName}!`);
-        showScore();
-        console.log(`Resposta Correta: ${mixQuestions.correct}`);
-        console.log(`\n${userName} Voce perdeu!`);
-        answerLoser = readline.question("\nDeseja continuar jogando? (S/N) ");
-        gameActive();
-    }
-}
-
-function showQuestion(mixQuestions, useAnswer) {
-    console.log(`Pergunta: ${mixQuestions.question}`);
-    console.log("Opções:");
-    mixQuestions.options.forEach((option) => {
-        console.log(option);
-    });
-
-    const answerAlternative = readline.question("\nDigite a alternativa correta (a, b, c, d): ");
-    const answer = answerAlternative.toLowerCase();
-
-    useAnswer(answer, userName);
-}
-
-function gameActive(){
-    while(answerLoser == "s"){
-        answerLoser = readline.question("\nDeseja continuar jogando? (S/N) ");
-    }
-} 
-
-
-function rodada(questions, answer, level, useAnswer) {
-    const userName = nameUser();
-    const initialScore = 0;
-    let score = initialScore;
-    let questionUsed = [];
-
-
-    console.log(`\nBem-vindo ao Show do Caião, ${userName}!\n`);
-    showScore();
-
-    mixQuestions(questions, level);
-    addScore();
-
-    while ((score < 1000000) && answer === mixQuestions.correct){
-        showQuestion(mixQuestions, useAnswer);
+class Game {
+    constructor() {
+        this.score = 0;
+        this.userName = "";
+        this.gameActive = true;
+        this.questionsUsed = [];
     }
 
-    if (score == 1000000){
-        console.log(`\nParabéns ${userName} novo milionario, tu ganhou o jogo!`);
+    start() {
+        this.userName = this.getName();
+        console.log(`\nBem-vindo ao Show do Caião, ${this.userName}!\n`);
+        console.log("Pressione p para parar o jogo a qualquer momento:");
+
+        this.playRound(easeQuestions, "fáceis");
+        if (this.gameActive) this.playRound(mediumQuestions, "intermediárias");
+        if (this.gameActive) this.playRound(hardQuestions, "difíceis");
+
+        if (this.score === 1000000) {
+            console.log(`\nParabéns ${this.userName}, novo milionário! Você ganhou o jogo!`);
+        }
     }
-    
-}
 
-function mixQuestions(questions, level) {
-    for (let i = 0; i < 5; i++) {
-        showQuestion(randomQuestions, useAnswer);
+    getName() {
+        return readline.question("Qual o seu nome? ");
+    }
 
-        const randomQuestions = questions[Math.floor(Math.random() * questions.length)];
+    playRound(questions, level) {
+        console.log(`\n=== Nível ${level} ===\n`);
+        
+        // Embaralha as perguntas
+        const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+        
+        for (let i = 0; i < Math.min(5, shuffledQuestions.length); i++) {
+            const question = shuffledQuestions[i];
+            this.showQuestion(question);
+            
+            if (!this.gameActive) break;
+        }
+    }
 
-        console.log(`\nFim das perguntas ${level}\n`);
+    showQuestion(question) {
+        console.log(`\nPontuação atual: ${this.score}R$\n`);
+        console.log(`Pergunta: ${question.question}`);
+        console.log("Opções:");
+        question.options.forEach(option => console.log(option));
+
+        const answer = readline.question("\nDigite a alternativa correta (a, b, c, d) ou 'p' para parar: ").toLowerCase();
+
+        if (answer === 'p') {
+            this.gameActive = false;
+            console.log(`\n${this.userName} pediu para parar!`);
+            console.log(`\n${this.userName}, você ganhou ${this.score}R$`);
+            return;
+        }
+
+        this.checkAnswer(answer, question);
+    }
+
+    checkAnswer(answer, question) {
+        if (answer === question.correct) {
+            this.score += question.score;
+            console.log(`✔ Resposta Correta ${this.userName}!`);
+            console.log(`Você agora tem ${this.score}R$`);
+        } else {
+            console.log(`❌ Resposta Incorreta ${this.userName}!`);
+            console.log(`Resposta Correta: ${question.correct}`);
+            console.log(`\n${this.userName}, você perdeu!`);
+            
+            const continuePlaying = readline.question("\nDeseja jogar novamente? (S/N) ").toLowerCase();
+            this.gameActive = continuePlaying === 's';
+        }
     }
 }
-  
-rodada(easeQuestions, "fáceis", useAnswer);
-rodada(mediumQuestions, "intermediárias", useAnswer);
-rodada(hardQuestions, "difíceis", useAnswer);
 
+// Inicia o jogo
+const game = new Game();
+game.start();
