@@ -1,0 +1,26 @@
+{
+  "dependencies": {
+    "readline-sync": "^1.4.10"
+  },
+  "name": "show-do-milhao",
+  "version": "1.0.0",
+  "description": "***\r Créditos: https://youtu.be/KXvONdomGos?si=RkD7jbtDqZezUcV-\r ***",
+  "main": "script.js",
+  "devDependencies": {},
+  "scripts": {
+    "start": "node script.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CaiaoCesar/Show-do-Milhao.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/CaiaoCesar/Show-do-Milhao/issues"
+  },
+  "homepage": "https://github.com/CaiaoCesar/Show-do-Milhao#readme"
+}
