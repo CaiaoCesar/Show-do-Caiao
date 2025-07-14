@@ -1,6 +1,5 @@
 const readline = require("readline-sync");
 
-// Banco de perguntas ampliado
 const questionsDatabase = [
     // Rodada 1 (Valor: 5.000 cada)
     {
@@ -228,12 +227,12 @@ class Game {
     checkAnswer(answer, question) {
         if (answer === question.correct) {
             this.score += question.score;
-            console.log(`\n✔ RESPOSTA CORRETA! ✔`);
+            console.log(`\n✔ ACERTOU! ✔`);
             console.log(`Você agora tem ${this.score}R$`);
 
             this.questionsUsed.push(question.question);
         } else {
-            console.log(`\n❌ RESPOSTA INCORRETA! ❌`);
+            console.log(`\n❌ ERROU! ❌`);
             const halfScore = Math.floor(this.score / 2);
             this.score = halfScore;
             this.lastRoundPlayed = this.currentRound;
@@ -308,9 +307,9 @@ class Game {
 // Inicia o jogo
 console.log("============================================");
 console.log("|        BEM-VINDO AO SHOW DO CAIÃO        |");
-console.log("|         O SHOW DO MILHÃO BRASILEIRO      |");
+console.log("|         O SHOW DO MILHÃO DOS NERDS       |");
 console.log("============================================");
-console.log("|  5 rodadas - 15 perguntas - 1 MILHÃO!    |");
+console.log("|  5 rodadas => 15 perguntas => 1 MILHÃO!  |");
 console.log("============================================");
 
 const game = new Game();
