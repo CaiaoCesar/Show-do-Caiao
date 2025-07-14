@@ -28,9 +28,9 @@ As perguntas foram **criadas pelo autor** com base em temas diversos como conhec
 
 ### 🔗 Créditos de Apoio (Vídeos Referência)
 
-- [Como Criar um Jogo de Perguntas em JS](https://youtu.be/KXvONdomGos?si=RkD7jbtDqZezUcV-)
+- [Quiz Simples com HTML, CSS e JavaScript](https://youtu.be/KXvONdomGos?si=RkD7jbtDqZezUcV-)
 - [Projeto Quiz em JavaScript com HTML e CSS](https://youtu.be/7b6HW8-67WE?si=qf6OSL2ebUCAocDR)
-- [Jogo de Quiz com Node.js e readline-sync](https://youtu.be/IV34pOplBsY?si=DmocR5-CqWNvZTVY)
+- [App de Quiz Usando JavaScript](https://youtu.be/IV34pOplBsY?si=DmocR5-CqWNvZTVY)
 
 ---
 
