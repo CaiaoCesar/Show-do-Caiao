@@ -108,18 +108,11 @@ class Game {
         this.highScores = [];
     }
 
-    getScore() {
-        return this.score;
-    }
-
-    getUserName() {
-        return this.userName;
-    }
-
     start() {
+        this.resetGame();
         this.userName = this.getName();
         console.log(`\nBem-vindo ao Show do Caião, ${this.userName}!\n`);
-        console.log("Pressione p para parar o jogo a qualquer momento:");
+        console.log("Pressione 'p' para parar o jogo a qualquer momento:");
 
         this.playRound(easeQuestions, "fáceis");
         if (this.gameActive) this.playRound(mediumQuestions, "intermediárias");
@@ -130,7 +123,7 @@ class Game {
         }
         
         this.saveHighScore();
-        this.showHighScores();
+        this.endGame();
     }
 
     getName() {
@@ -140,45 +133,32 @@ class Game {
     playRound(questions, level) {
         console.log(`\n=== Nível ${level} ===\n`);
         
-        // Embaralha as perguntas
         const shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
         
         for (let i = 0; i < Math.min(5, shuffledQuestions.length); i++) {
             const question = shuffledQuestions[i];
-            this.showQuestion(question, level);
+            this.showQuestion(question, level, i + 1);
             
             if (!this.gameActive) break;
         }
     }
 
-    showDataGame(level, question){
-        console.log(`\nPontuação atual: ${this.score}R$\n`);
+    showDataGame(level, question) {
+        console.log(`\n************************************************************`);
+        console.log(`Pontuação atual: ${this.score}R$`);
+        console.log(`Prêmio desta questão: ${question.score}R$`);
 
-        if (!this.gameActive) {
-            console.log("\nO jogo acabou!");
-            return;
+        if (this.score > 0) {
+            console.log(`Se errar, você fica com ${Math.floor(this.score / 2)}R$`);
+        } else {
+            console.log(`Se errar, você fica com 0R$`);
         }
-
-        if (this.score > 0){
-             console.log(`\nSe errar voce perde e fica com ${Math.floor(question.score/2)}R$\n`);
-        }
-        else{
-            console.log("\nSe errar voce perde e fica com 0R$\n");
-        }
-       
-        
-        if (level == 'fáceis'){
-            console.log("\n Se acertar a questão ganha mais 5000R$");
-        } else if (level == 'intermediárias'){
-            console.log("\n Se acertar a questão ganha mais 50000R$");
-        } else if (level == 'difíceis'){
-            console.log("\n Se acertar a questão ganha mais 100000R$");
-        }
+        console.log(`************************************************************\n`);
     }
 
-    showQuestion(level, question) {
+    showQuestion(question, level, questionNumber) {
         this.showDataGame(level, question);
-        console.log(`Pergunta: ${question.question}`);
+        console.log(`Questão ${questionNumber}: ${question.question}`);
         console.log("Opções:");
         question.options.forEach(option => console.log(option));
 
@@ -188,6 +168,7 @@ class Game {
             this.gameActive = false;
             console.log(`\n${this.userName} pediu para parar!`);
             console.log(`\n${this.userName}, você ganhou ${this.score}R$`);
+            this.endGame();
             return;
         }
 
@@ -197,61 +178,78 @@ class Game {
     checkAnswer(answer, question) {
         if (answer === question.correct) {
             this.score += question.score;
-            console.log(`✔ Resposta Correta ${this.userName}!`);
+            console.log(`\n✔ Resposta Correta ${this.userName}!`);
             console.log(`Você agora tem ${this.score}R$`);
         } else {
-            console.log(`❌ Resposta Incorreta ${this.userName}!`);
-            if (this.score > 0){
-                console.log(`Voce perdeu, mas ganhou ${question.score/2}R$`);
-            }
-            else {
+            console.log(`\n❌ Resposta Incorreta ${this.userName}!`);
+            const halfScore = Math.floor(this.score / 2);
+            this.score = halfScore;
+            
+            if (halfScore > 0) {
+                console.log(`Você perdeu, mas ganhou ${halfScore}R$`);
+            } else {
                 console.log(`Você não ganhou nada!`);
             }
             
             console.log(`Resposta Correta: ${question.correct}`);
             console.log(`\n${this.userName}, você perdeu!`);
-            
-            const continuePlaying = readline.question("\nDeseja jogar novamente? (S/N) ").toLowerCase();
-            if (continuePlaying !== 's'){
-                this.score = 0;
-                this.gameActive = true; 
-                this.start();
-            }
-            else{
-                this.gameActive = false;
-            }
+            this.endGame();
+        }
+    }
+
+    endGame() {
+        this.saveHighScore();
+        this.showRecords();
+        this.showHighScores();
+        
+        const playAgain = readline.question("\nDeseja jogar novamente? (S/N) ").toLowerCase();
+        if (playAgain === 's') {
+            this.start();
+        } else {
+            console.log(`\nObrigado por jogar, ${this.userName}! Até a próxima!`);
+            this.gameActive = false;
+        }
+    }
+
+    showRecords() {
+        console.log("\n=== SEUS RESULTADOS ===");
+        console.log(`Pontuação final: ${this.score}R$`);
+        if (this.score === 1000000) {
+            console.log("🏆 Parabéns! Você atingiu a pontuação máxima! 🏆");
         }
     }
 
     saveHighScore() {
-        // Adiciona o novo score
         this.highScores.push({ name: this.userName, score: this.score });
-        
-        // Ordena do maior para o menor
         this.highScores.sort((a, b) => b.score - a.score);
-        
-        // Mantém apenas os top 10
         this.highScores = this.highScores.slice(0, 10);
-        
-        console.log("\nSeu score foi salvo localmente!");
     }
 
     showHighScores() {
+        console.log("\n=== MELHORES PONTUAÇÕES ===");
+        
         if (this.highScores.length === 0) {
-            console.log("\nNenhum high score registrado ainda.");
+            console.log("Nenhuma pontuação registrada ainda.");
             return;
         }
-
-        console.log("\n=== High Scores ===");
         
-        // Exibe os scores formatados
         this.highScores.forEach((score, index) => {
             console.log(`${index + 1}. ${score.name}: ${score.score}R$`);
         });
     }
 
+    resetGame() {
+        this.score = 0;
+        this.gameActive = true;
+        this.questionsUsed = [];
+    }
 }
 
 // Inicia o jogo
+console.log("============================================");
+console.log("|        BEM-VINDO AO SHOW DO CAIÃO        |");
+console.log("|         O SHOW DO MILHÃO BRASILEIRO      |");
+console.log("============================================");
+
 const game = new Game();
 game.start();
