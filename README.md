@@ -21,19 +21,6 @@ Caio César Oliveira Silva
 - Em caso de erro: leva **metade** do acumulado
 - Digite `p` a qualquer momento para parar
 
-## 🎮 Como Jogar
-```bash
-# Clone o repositório
-git clone https://github.com/CaiaoCesar/Show-do-Caiao
-
-# Acesse a pasta do projeto
-cd Show-do-Caião
-
-# Instale as dependências
-npm install
-
-# Inicie o jogo
-npm start
 
 ## ❓ Banco de Perguntas
 
@@ -87,3 +74,17 @@ A lógica do jogo está organizada dentro da classe `Game`, com os seguintes mé
 - **Sistema de Consolação**: Ao errar, o jogador leva **metade** do valor acumulado.
 - **Controle de Perguntas Repetidas**: Nenhuma pergunta se repete dentro da mesma sessão.
 - **Validação Robusta**: Aceita apenas respostas válidas.
+
+## 🎮 Como Jogar
+```bash
+# Clone o repositório
+git clone https://github.com/CaiaoCesar/Show-do-Caiao
+
+# Acesse a pasta do projeto
+cd Show-do-Caião
+
+# Instale as dependências
+npm install
+
+# Inicie o jogo
+npm start
