@@ -359,7 +359,7 @@ console.log("============================================");
 console.log("|        BEM-VINDO AO SHOW DO CAIÃO        |");
 console.log("|         O SHOW DO MILHÃO DOS NERDS       |");
 console.log("============================================");
-console.log("|  5 rodadas => 15 perguntas => + 2 MILHÕES!  |");
+console.log("| 5 rodadas => 15 perguntas => + 2 MILHÕES!|");
 console.log("============================================");
 
 const game = new Game();
