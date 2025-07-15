@@ -87,7 +87,6 @@ O jogo salva automaticamente as melhores pontuações em um arquivo `scores.json
 - Sobrevive a reinicializações do jogo
 
 📂 **Estrutura do arquivo**:
-```json
 [
   {
     "name": "Jogador",
@@ -95,7 +94,6 @@ O jogo salva automaticamente as melhores pontuações em um arquivo `scores.json
     "date": "2023-11-20T12:34:56.789Z"
   }
 ]
-```json
 
 ## 🎮 Como Jogar
 ```bash
