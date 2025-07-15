@@ -36,7 +36,7 @@ As perguntas foram **criadas pelo autor** com base em temas diversos como conhec
 
 ## 🎤 Inspiração
 
-Baseado no clássico televisivo brasileiro **"Show do Milhão"** adaptado com uma pegada nerd e interativa via terminal.
+Baseado no clássico televisivo brasileiro **"Show do Milhão"** e no Game Mobile **"Jogo do Bilhão"** adaptado com uma pegada nerd e interativa via terminal.
 
 ---
 
