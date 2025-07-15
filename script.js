@@ -1,4 +1,6 @@
 const readline = require("readline-sync");
+const fs = require("fs");
+const path = require("path");
 
 const questionsDatabase = [
     // Rodada 1 (Valor: 5.000 cada)
@@ -124,7 +126,7 @@ class Game {
         this.gameActive = true;
         this.currentRound = 1;
         this.questionsUsed = [];
-        this.highScores = [];
+        this.highScores = this.loadHighScores();
         this.lastRoundPlayed = 0;
     }
 
@@ -273,12 +275,52 @@ class Game {
             console.log("Resposta inválida! Digite S ou N.");
         }
     }
-      
+    
+    loadHighScores() {
+        try {
+            const scoresPath = path.join(__dirname, "scores.json");
+            if (fs.existsSync(scoresPath)) {
+                const data = fs.readFileSync(scoresPath, "utf8");
+                return JSON.parse(data);
+            } else {
+                // Se o arquivo não existir, cria um novo com array vazio
+                fs.writeFileSync(scoresPath, "[]", "utf8");
+                return [];
+            }
+        } catch (err) {
+            console.error("Erro ao carregar scores:", err);
+            return [];
+        }
+    }
 
-    saveHighScore() {
-        this.highScores.push({ name: this.userName, score: this.score });
+    // Salva os highscores no arquivo
+    saveHighScoresToFile() {
+        try {
+            const scoresPath = path.join(__dirname, 'scores.json');
+            fs.writeFileSync(
+                scoresPath, 
+                JSON.stringify(this.highScores, null, 2),
+                'utf8'
+            );
+        } catch (err) {
+            console.error("Erro ao salvar scores:", err);
+        }
+    }
+
+   saveHighScore() {
+        // Adiciona a nova pontuação
+        this.highScores.push({ 
+            name: this.userName, 
+            score: this.score,
+            date: new Date().toISOString()
+        });
+        
+        // Ordena e mantém apenas os top 10
         this.highScores.sort((a, b) => b.score - a.score);
         this.highScores = this.highScores.slice(0, 10);
+        
+        // Salva no arquivo
+        this.saveHighScoresToFile();
     }
 
     showHighScores() {
@@ -291,7 +333,8 @@ class Game {
         
         this.highScores.forEach((score, index) => {
             const medal = index === 0 ? "🥇" : index === 1 ? "🥈" : index === 2 ? "🥉" : "  ";
-            console.log(`${medal} ${index + 1}. ${score.name}: ${score.score.toLocaleString('pt-BR')}R$`);
+            const date = new Date(score.date).toLocaleDateString();
+            console.log(`${medal} ${index + 1}. ${score.name}: ${score.score.toLocaleString('pt-BR')}R$ (${date})`);
         });
     }
 
