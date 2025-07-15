@@ -136,7 +136,7 @@ class Game {
         console.log(`\nBem-vindo ao Show do Caião, ${this.userName}!\n`);
         console.log("Pressione 'p' para parar o jogo a qualquer momento");
 
-        console.log("\nVALOR ACUMULADO: 1.000.000R$");
+        console.log("\nVALOR ACUMULADO: ATÉ 2.145.000R$");
         console.log("5 rodadas com 3 perguntas cada\n");
 
         for (let round = 1; round <= 5; round++) {
@@ -155,9 +155,17 @@ class Game {
 
         if (this.score === 1000000) {
             console.log(`\n🎉 PARABÉNS ${this.userName.toUpperCase()}! 🎉`);
-            console.log("VOCÊ CONQUISTOU 1 MILHÃO DE REAIS (Boa sorte com os Impostos kk)!");
+            console.log("VOCÊ CONQUISTOU 1 MILHÃO DE REAIS!");
         }
-        
+        else if (this.score === 2000000) {
+            console.log(`\n🎉 PARABÉNS ${this.userName.toUpperCase()}! 🎉`);
+            console.log("VOCÊ CONQUISTOU 2 MILHÃO DE REAIS (Boa sorte com os Impostos kk)!");
+        }
+        else if (this.score === 2145000) {
+            console.log(`\n🎉 PARABÉNS ${this.userName.toUpperCase()}! 🎉`);
+            console.log("VOCÊ ALCANÇOU 2.145.000 REAIS O PRÊMIO MÁXIMO!");
+        }
+
         this.endGame();
     }
 
@@ -293,7 +301,6 @@ class Game {
         }
     }
 
-    // Salva os highscores no arquivo
     saveHighScoresToFile() {
         try {
             const scoresPath = path.join(__dirname, 'scores.json');
@@ -352,7 +359,7 @@ console.log("============================================");
 console.log("|        BEM-VINDO AO SHOW DO CAIÃO        |");
 console.log("|         O SHOW DO MILHÃO DOS NERDS       |");
 console.log("============================================");
-console.log("|  5 rodadas => 15 perguntas => 1 MILHÃO!  |");
+console.log("|  5 rodadas => 15 perguntas => + 2 MILHÕES!  |");
 console.log("============================================");
 
 const game = new Game();

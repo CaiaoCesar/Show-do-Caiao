@@ -65,6 +65,10 @@ A lógica do jogo está organizada dentro da classe `Game`, com os seguintes mé
 - `checkAnswer()` – Valida a resposta e atualiza a pontuação
 - `endGame()` – Finaliza o jogo, mostra resultados e pergunta se o jogador quer continuar
 - `resetGame()` – Prepara o jogo para uma nova partida
+- `showHighScores()` - Exibe os Recordes
+- `loadHighScores()` - Cria o scores.json e carrega o conteudo dele
+- `saveHighScoresToFile()` - Salva os Recordes no scores.json
+- `saveHighScore()` - Adiciona e Ordena os Recordes.
 
 ---
 
@@ -74,6 +78,23 @@ A lógica do jogo está organizada dentro da classe `Game`, com os seguintes mé
 - **Sistema de Consolação**: Ao errar, o jogador leva **metade** do valor acumulado.
 - **Controle de Perguntas Repetidas**: Nenhuma pergunta se repete dentro da mesma sessão.
 - **Validação Robusta**: Aceita apenas respostas válidas.
+
+## 💾 Persistência de Dados
+Sistema de Ranking Didático
+O jogo salva automaticamente as melhores pontuações em um arquivo `scores.json` (criado automaticamente ao executar o programa) que:
+- Armazena os top 10 scores de todos os tempos
+- Mantém a data de cada recorde
+- Sobrevive a reinicializações do jogo
+
+📂 **Estrutura do arquivo**:
+```json
+[
+  {
+    "name": "Jogador",
+    "score": 1000000,
+    "date": "2023-11-20T12:34:56.789Z"
+  }
+]
 
 ## 🎮 Como Jogar
 ```bash
